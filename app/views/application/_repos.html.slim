@@ -2,9 +2,10 @@
 .row-fluid
   .span4
     ul.nav.nav-tabs.nav-stacked#repo-tabs data-tabs="tabs"
-      - repos.group_by(&:language).each do |lang, repos|
-        - unless lang == nil
-          li = link_to lang, "##{lang.parameterize}#{lang.hash}", data: { toggle: "tab" }
+      = select_tag "lang", options_for_select(@languages)
+      /- repos.group_by(&:language).each do |lang, repos|
+        /- unless lang == nil
+          /li = link_to lang, "##{lang.parameterize}#{lang.hash}", data: { toggle: "tab" }
     = link_to "Submit a Repo", new_repo_path, class: 'btn btn-success'
   .tab-content.span8#repos
     - repos.group_by(&:language).each do |lang, repos|
