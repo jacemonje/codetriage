@@ -2,10 +2,12 @@
 .row-fluid
   .span4
     ul.nav.nav-tabs.nav-stacked#repo-tabs data-tabs="tabs"
-      = select_tag "lang", options_for_select(@languages)
-      /- repos.group_by(&:language).each do |lang, repos|
-        /- unless lang == nil
-          /li = link_to lang, "##{lang.parameterize}#{lang.hash}", data: { toggle: "tab" }
+      / = select_tag "lang", options_for_select(@languages)
+      select#language
+        - repos.group_by(&:language).each do |lang, repos|
+          - unless lang == nil
+              option value="##{lang.parameterize}#{lang.hash}" data-target="##{lang.parameterize}#{lang.hash}" = lang
+        / li = link_to lang, "##{lang.parameterize}#{lang.hash}", data: { toggle: "tab" }
     = link_to "Submit a Repo", new_repo_path, class: 'btn btn-success'
   .tab-content.span8#repos
     - repos.group_by(&:language).each do |lang, repos|
@@ -22,4 +24,8 @@ javascript:
       $('.nav-tabs a[href='+hash+']').tab('show');
     }
     $("#repos").slimscroll({height: '50vh'});
+
+    $('#language').on('change', function(e){
+      $('#language option[value="' + $(this).val() + '"]').attr("selected", "selected").tab("show");
+    });
   });
