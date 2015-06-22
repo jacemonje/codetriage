@@ -64,7 +64,7 @@ class Repo < ActiveRecord::Base
 
   def self.search(search)
     search_condition = "%#{search}%"
-    where('name LIKE ? OR description LIKE ?', search_condition, search_condition)
+    where('name LIKE ? OR description LIKE ?', search_condition, search_condition).order("name").order("issues_count DESC").order("description")
   end
 
   def self.search_by(repo_name, user_name)

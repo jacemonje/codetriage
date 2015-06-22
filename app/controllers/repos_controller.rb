@@ -6,6 +6,12 @@ class ReposController < RepoBasedController
 
   def index
     @repos = Repo.order_by_subscribers.order(:name).page(params[:page]).per_page(params[:per_page] || 50)
+    @languages = []
+    @repos.group_by(&:language).each do |lang|
+      unless lang == nil
+        @languages.push(lang)
+      end
+    end     
   end
 
   def new
@@ -69,6 +75,9 @@ class ReposController < RepoBasedController
 
   def search
     @repos = Repo.search(params[:search])
+    if @repos.empty?
+      flash[:alert] = "Couldn't find repository with name = #{params[:search]}"
+    end
   end
 
   private
