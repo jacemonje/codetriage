@@ -73,6 +73,10 @@ class ReposController < RepoBasedController
     end
   end
 
+  def search
+    @repos = Repo.search(params[:search])
+  end
+
   private
 
     def repo_params
