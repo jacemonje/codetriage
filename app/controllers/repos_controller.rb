@@ -6,6 +6,12 @@ class ReposController < RepoBasedController
 
   def index
     @repos = Repo.order_by_subscribers.order(:name).page(params[:page]).per_page(params[:per_page] || 50)
+    @languages = []
+    @repos.group_by(&:language).each do |lang|
+      unless lang == nil
+        @languages.push(lang)
+      end
+    end     
   end
 
   def new
